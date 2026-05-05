@@ -1,0 +1,106 @@
+/* src/app/text-animation/styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
+
+.animation-container {
+  min-height: 100vh;
+  background-color: #080808;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.bg-noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 1;
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-title {
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  font-weight: 900;
+  line-height: 0.9;
+  text-align: center;
+  margin-bottom: 4rem;
+  text-transform: uppercase;
+  letter-spacing: -0.06em;
+}
+
+.word-row {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 0.2em;
+}
+
+.char {
+  display: inline-block;
+  transform: translateY(100%);
+  animation: charReveal 1s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  background: linear-gradient(180deg, #fff 30%, rgba(255,255,255,0.2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes charReveal {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.description {
+  max-width: 800px;
+  text-align: center;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.5;
+  color: #777;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.1em;
+}
+
+.description .char {
+  animation: charFadeIn 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(10px);
+  -webkit-text-fill-color: #888;
+}
+
+@keyframes charFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gradient-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150vw;
+  height: 150vh;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}

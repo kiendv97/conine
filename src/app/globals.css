@@ -260,29 +260,11 @@
   margin-bottom: 26px;
 }
 
-.hero-section h1 {
-  display: flex;
-  flex-direction: column;
-  font-size: clamp(70px, 10vw, 148px);
-  font-weight: 400;
-  line-height: 0.92;
-  margin: 0;
-  max-width: 1100px;
-  text-transform: uppercase;
-  width: min(1100px, 100%);
-}
 
 .hero-section h1 span:nth-child(2) {
   padding-left: clamp(0px, 10vw, 150px);
 }
 
-.hero-copy {
-  font-size: clamp(20px, 2.4vw, 34px);
-  line-height: 1.42;
-  margin: 48px 0 34px;
-  max-width: 760px;
-  width: min(760px, 100%);
-}
 
 .text-link,
 .outline-link {
@@ -314,6 +296,7 @@
 
 .section-heading.text-left {
   align-items: flex-start;
+  text-align: left;
 }
 
 .section-heading h2 {
@@ -329,6 +312,14 @@
   aspect-ratio: 1.46;
   object-fit: cover;
   width: 100%;
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.is-visible .service-photo {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .service-list {
@@ -759,4 +750,200 @@
   .alive-footer nav {
     justify-content: flex-start;
   }
+}
+
+/* Text Reveal Animation */
+.reveal-container {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.reveal-char {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+  animation: revealIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.reveal-word-wrapper {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.reveal-word {
+  display: inline-block;
+  transform: translateY(100%);
+  animation: revealIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes revealIn {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Text Split (Slit) Animation */
+.text-split-container {
+  display: inline-flex;
+  flex-wrap: wrap;
+  line-height: 1.2;
+}
+
+.text-split-wrapper {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.text-split-item {
+  transform: translateY(110%);
+  opacity: 0;
+  transition: none;
+}
+
+.text-split-item.animate {
+  animation: slitIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slitIn {
+  0% {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Hero Title New Styles */
+.hero-title-new {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05em;
+  margin-bottom: 2.5rem;
+  font-size: clamp(40px, 8vw, 110px); /* Reduced from 148px max */
+  line-height: 0.95;
+  font-weight: 400;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.small-we {
+  font-size: 0.3em;
+  font-weight: 300;
+  margin-right: 0.3em;
+  opacity: 0.8;
+}
+
+.italic-filled {
+  font-family: serif;
+  font-style: italic;
+  font-size: 0.35em;
+  text-transform: lowercase;
+  margin-right: 0.5em;
+  opacity: 0.7;
+  display: inline-block;
+}
+
+.rotating-wrapper {
+  display: inline-grid;
+  grid-template-columns: 1fr;
+  vertical-align: bottom;
+  overflow: hidden;
+  margin-left: 0.1em;
+}
+
+.rotating-word {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(50%);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  white-space: nowrap;
+}
+
+.rotating-word.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.line-1, .line-2, .line-3 {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.hero-copy {
+  font-family: inherit; /* Sử dụng font giống tiêu đề/header */
+  font-size: clamp(16px, 1.8vw, 24px);
+  line-height: 1.5;
+  margin: 32px 0;
+  max-width: 800px;
+  color: #444;
+  font-weight: 400;
+}
+
+@media (max-width: 767px) {
+  .hero-title-new {
+    font-size: clamp(32px, 10vw, 48px);
+    gap: 0.2em;
+  }
+  
+  .hero-copy {
+    font-size: 16px;
+    max-width: 100%;
+  }
+}
+
+/* Section Tilt & Flash Animation */
+@keyframes tiltAndFlash {
+  0% {
+    transform: perspective(1500px) rotateX(20deg) rotateY(-15deg) translateY(100px) scale(0.85);
+    opacity: 0;
+    filter: blur(20px) brightness(2.5);
+  }
+  40% {
+    opacity: 1;
+  }
+  70% {
+    filter: brightness(1.3);
+  }
+  100% {
+    transform: perspective(1500px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+}
+
+/* Section Content Reveal Animation */
+.animate-tilt-flash {
+  opacity: 1; /* Keep visible but content will animate */
+}
+
+.animate-tilt-flash.is-visible {
+  /* Removed aggressive tilt */
+}
+
+@keyframes flashEffect {
+  0% {
+    opacity: 0.6;
+    background: white;
+  }
+  100% {
+    opacity: 0;
+    background: white;
+  }
+}
+
+.is-visible .flash-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  animation: flashEffect 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

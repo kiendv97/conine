@@ -1,5 +1,11 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
 import { ArrowRight, Download, Mail, Menu } from "lucide-react";
 import Link from "next/link";
+import TextReveal from "@/components/TextReveal";
+import TextSplit from "@/components/TextSplit";
+import SplashScreen from "@/components/SplashScreen";
 
 const navItems = ["Services", "Works", "Clients", "Company", "FAQ", "Blog", "Careers"];
 
@@ -97,23 +103,65 @@ function SectionHeading({
   label,
   title,
   align = "center",
+  reveal = false,
+  trigger = false,
 }: {
   label: string;
   title: string;
   align?: "center" | "left";
+  reveal?: boolean;
+  trigger?: boolean;
 }) {
   return (
     <div className={align === "left" ? "section-heading text-left" : "section-heading"}>
       <span>{label}</span>
-      <h2>{title}</h2>
+      <h2 className="section-title">
+        {title}
+      </h2>
     </div>
   );
 }
 
+function useInView(options = {}) {
+  const ref = useRef(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsInView(true);
+        observer.unobserve(entry.target);
+      }
+    }, { threshold: 0.2, ...options });
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [options]);
+
+  return [ref, isInView];
+}
+
 export default function Home() {
+  const [isReady, setIsReady] = useState(false);
+  const [rotatingIndex, setRotatingIndex] = useState(0);
+  const rotatingWords = ["PASSION", "MEANING", "UNIQUENESS"];
+  
+  const [serviceRef, serviceVisible] = useInView();
+
+  useEffect(() => {
+    if (!isReady) return;
+    const interval = setInterval(() => {
+      setRotatingIndex((prev) => (prev + 1) % rotatingWords.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [isReady]);
+
   return (
     <main className="alive-page">
-      <header className="alive-header">
+      <SplashScreen onComplete={() => setIsReady(true)} />
+      {isReady && (
+        <>
+          <header className="alive-header">
         <Link href="/" className="alive-logo" aria-label="ALIVE Vietnam">
           <img src="/images/alive/logo.svg" alt="ALIVE VIETNAM" />
         </Link>
@@ -145,21 +193,45 @@ export default function Home() {
       <section className="hero-section">
         <div className="hero-bg" />
         <p className="hero-kicker">ALIVE Vietnam</p>
-        <h1>
-          <span>Design</span>
-          <span>Branding</span>
-          <span>Marketing</span>
+        <h1 className="hero-title-new">
+          <div className="line-1">
+            <span className="small-we">WE</span> <TextReveal text="CREATE" delay={0.2} mode="word" />
+          </div>
+          <div className="line-2">
+            <TextReveal text="YOUR DESIGN" delay={0.4} mode="word" />
+          </div>
+          <div className="line-3">
+            <span className="italic-filled">filled with</span>
+            <div className="rotating-wrapper">
+              {rotatingWords.map((word, index) => (
+                <span 
+                  key={word} 
+                  className={`rotating-word ${index === rotatingIndex ? 'active' : ''}`}
+                >
+                  {word}
+                </span>
+              ))}
+            </div>
+          </div>
         </h1>
         <p className="hero-copy">
-          ALIVE is a digital design studio, based in <strong>Japan</strong> and <strong>Vietnam</strong>.
-          Finding creative solutions for businesses using design & technology is what we do.
+          <TextReveal 
+            text="ALIVE is a digital design studio, based in Japan and Vietnam. Finding creative solutions for businesses using design & technology is what we do." 
+            delay={1} 
+            charDelay={0.015}
+          />
         </p>
         <a href="#services" className="text-link">
           Explore services <ArrowRight size={18} />
         </a>
       </section>
-
-      <section className="services-section" id="services">
+      
+      <section 
+        ref={serviceRef as any}
+        className={`services-section animate-tilt-flash ${serviceVisible ? 'is-visible' : ''}`} 
+        id="services"
+      >
+        <div className="flash-overlay" />
         <div className="split-section">
           <div>
             <SectionHeading
@@ -285,6 +357,8 @@ export default function Home() {
           <a href="#contact">Contact</a>
         </nav>
       </footer>
+        </>
+      )}
     </main>
   );
 }
