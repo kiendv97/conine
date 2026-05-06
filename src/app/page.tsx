@@ -141,6 +141,31 @@ function useInView(options = {}) {
   return [ref, isInView];
 }
 
+function WorkCard({ work, index }: { work: any; index: number }) {
+  const [ref, isInView] = useInView({ threshold: 0.25 });
+
+  return (
+    <article
+      ref={ref as any}
+      className={`work-card ${work.dark ? "work-card-light" : ""} ${isInView ? "is-visible" : ""}`}
+      key={work.title}
+    >
+      <a href="#works" aria-label={work.title}>
+        <img 
+          src={work.image} 
+          alt="" 
+          className={`work-image ${isInView ? "is-visible" : ""}`}
+        />
+        <div>
+          <span>{index + 1 < 10 ? `0${index + 1}` : index + 1}</span>
+          <h3>{work.title}</h3>
+          <p>{work.category}</p>
+        </div>
+      </a>
+    </article>
+  );
+}
+
 export default function Home() {
   const [isReady, setIsReady] = useState(false);
   const [rotatingIndex, setRotatingIndex] = useState(0);
@@ -257,19 +282,10 @@ export default function Home() {
       </section>
 
       <section className="works-section" id="works">
-        <SectionHeading label="Case Study" title={"Explore a few of our\nmost impactful studies"} />
+        <SectionHeading label="Case Study" title={"Explore a few of our\nmost impactful studies"} reveal/>
         <div className="works-grid">
           {workCards.map((work, index) => (
-            <article className={`work-card ${work.dark ? "work-card-light" : ""}`} key={work.title}>
-              <a href="#works" aria-label={work.title}>
-                <img src={work.image} alt="" />
-                <div>
-                  <span>{index + 1 < 10 ? `0${index + 1}` : index + 1}</span>
-                  <h3>{work.title}</h3>
-                  <p>{work.category}</p>
-                </div>
-              </a>
-            </article>
+            <WorkCard key={work.title} work={work} index={index} />
           ))}
         </div>
         <p className="works-tagline">Curious about how all of this comes to life?</p>

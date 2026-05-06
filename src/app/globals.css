@@ -392,8 +392,15 @@
 .work-card img {
   height: 100%;
   object-fit: cover;
-  transition: clip-path 0.25s ease, transform 0.25s ease;
+  transition: opacity 2.5s cubic-bezier(0.16, 1, 0.3, 1), transform 2.5s cubic-bezier(0.16, 1, 0.3, 1), clip-path 0.4s ease;
   width: 100%;
+  opacity: 0;
+  transform: translateY(100px) scale(1.05);
+}
+
+.work-card img.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .work-card div {
@@ -414,6 +421,7 @@
 .work-card:hover img {
   clip-path: inset(10px);
   transform: scale(1.02);
+  transition: transform 0.4s ease, clip-path 0.4s ease;
 }
 
 .work-card:hover div {
