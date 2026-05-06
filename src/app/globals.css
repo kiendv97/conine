@@ -457,64 +457,100 @@
 
 .logos-section {
   background: #fff;
-  padding: 100px 24px;
+  padding: 120px 24px;
 }
 
-.logo-grid {
-  display: grid;
-  gap: 1px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin: 0 auto;
-  max-width: 1120px;
+.brand-swiper-container {
+  margin-top: 60px;
+  position: relative;
 }
 
-.logo-tile {
+.brand-swiper .swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+
+.logo-tile-animated {
   align-items: center;
-  background: #f7f7f7;
+  background: #fff;
   display: flex;
   justify-content: center;
   min-height: 154px;
   padding: 32px;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(0.9);
+  opacity: 0.8;
 }
 
-.logo-tile img {
-  max-height: 82px;
+.logo-tile-animated.is-visible {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.logo-tile-animated img {
+  max-height: 85px;
+  max-width: 160px;
   object-fit: contain;
+  transition: all 0.4s ease;
+}
+
+.logo-tile-animated:hover img {
+  transform: scale(1.1);
 }
 
 .quotes-section {
-  background: #f7f7f7;
-  padding: 96px 24px;
+  background: #0a0a0a;
+  color: #fff;
+  padding: 140px 24px;
 }
 
-.quote-grid {
+.quote-grid-premium {
   display: grid;
-  gap: 1px;
+  gap: 30px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 0 auto;
-  max-width: 1120px;
+  margin: 80px auto 0;
+  max-width: 1200px;
 }
 
-.quote-card {
-  background: #fff;
-  padding: clamp(32px, 5vw, 58px);
+.quote-card-premium {
+  background: #171717;
+  padding: 60px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.quote-card p {
-  font-size: clamp(19px, 2vw, 26px);
-  line-height: 1.55;
-  margin: 0 0 36px;
+.quote-icon {
+  font-size: 80px;
+  line-height: 1;
+  color: #f29d3f;
+  margin-bottom: 20px;
+  font-family: serif;
+  opacity: 0.3;
 }
 
-.quote-card h3 {
-  font-size: 15px;
-  letter-spacing: 0.2em;
-  margin: 0 0 8px;
+.quote-card-premium p {
+  font-size: clamp(20px, 2.5vw, 28px);
+  line-height: 1.5;
+  margin: 0 0 40px;
+  font-weight: 300;
+  letter-spacing: -0.01em;
 }
 
-.quote-card span {
-  color: #595959;
+.quote-author-info h3 {
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.quote-author-info span {
+  color: #888;
   font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .company-section {
@@ -732,9 +768,14 @@
   }
 
   .logo-grid,
-  .quote-grid,
+  .brand-swiper-container,
+  .quote-grid-premium,
   .contact-grid {
     grid-template-columns: 1fr;
+  }
+
+  .quote-card-premium {
+    padding: 40px 30px;
   }
 
   .logos-section,

@@ -6,6 +6,11 @@ import Link from "next/link";
 import TextReveal from "@/components/TextReveal";
 import TextSplit from "@/components/TextSplit";
 import SplashScreen from "@/components/SplashScreen";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, FreeMode } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/free-mode";
+import { motion } from "framer-motion";
 
 const navItems = ["Services", "Works", "Clients", "Company", "FAQ", "Blog", "Careers"];
 
@@ -166,6 +171,42 @@ function WorkCard({ work, index }: { work: any; index: number }) {
   );
 }
 
+function LogoItem({ logo }: { logo: string }) {
+  const [ref, isInView] = useInView({ threshold: 0.5 });
+  
+  return (
+    <div 
+      ref={ref as any}
+      className={`logo-tile-animated ${isInView ? "is-visible" : ""}`}
+    >
+      <img src={`/images/alive/${logo}`} alt="" />
+    </div>
+  );
+}
+
+function QuoteCard({ quote, index }: { quote: any; index: number }) {
+  const [ref, isInView] = useInView({ threshold: 0.3 });
+  
+  return (
+    <motion.article 
+      ref={ref as any}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.8, delay: index * 0.2, ease: [0.16, 1, 0.3, 1] }}
+      className="quote-card-premium"
+    >
+      <div className="quote-icon">“</div>
+      <p>&quot;{quote.quote}&quot;</p>
+      <div className="quote-footer">
+        <div className="quote-author-info">
+          <h3>{quote.name}</h3>
+          <span>{quote.company}</span>
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
 export default function Home() {
   const [isReady, setIsReady] = useState(false);
   const [rotatingIndex, setRotatingIndex] = useState(0);
@@ -295,23 +336,40 @@ export default function Home() {
       </section>
 
       <section className="logos-section" id="clients">
-        <div className="logo-grid">
-          {logos.map((logo) => (
-            <div className="logo-tile" key={logo}>
-              <img src={`/images/alive/${logo}`} alt="" />
-            </div>
-          ))}
+        <SectionHeading label="Clients" title="Trusted by industry leaders" />
+        <div className="brand-swiper-container">
+          <Swiper
+            modules={[Autoplay, FreeMode]}
+            slidesPerView={2}
+            spaceBetween={1}
+            loop={true}
+            freeMode={true}
+            speed={5000}
+            autoplay={{
+              delay: 0,
+              disableOnInteraction: false,
+            }}
+            breakpoints={{
+              640: { slidesPerView: 3 },
+              768: { slidesPerView: 4 },
+              1024: { slidesPerView: 6 },
+            }}
+            className="brand-swiper"
+          >
+            {logos.map((logo, index) => (
+              <SwiperSlide key={`${logo}-${index}`}>
+                <LogoItem logo={logo} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </section>
 
       <section className="quotes-section">
-        <div className="quote-grid">
-          {quotes.map((quote) => (
-            <article className="quote-card" key={quote.name}>
-              <p>&quot;{quote.quote}&quot;</p>
-              <h3>{quote.name}</h3>
-              <span>{quote.company}</span>
-            </article>
+        <SectionHeading label="Feedback" title="What our partners say about us" />
+        <div className="quote-grid-premium">
+          {quotes.map((quote, index) => (
+            <QuoteCard key={quote.name} quote={quote} index={index} />
           ))}
         </div>
       </section>
